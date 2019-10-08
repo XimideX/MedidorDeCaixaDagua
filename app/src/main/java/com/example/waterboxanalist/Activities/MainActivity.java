@@ -1,8 +1,11 @@
 package com.example.waterboxanalist.Activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,10 +22,11 @@ import com.example.waterboxanalist.ReportsClasses.Reports;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     TextView meterPercent;
     Button meterButton;
+    Button goToReportsAndChartButton;
     WaterBox waterBox;
     ProgressBar percentageBar;
     List<Integer> waterBoxHistoryList;
@@ -38,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         waterBox = new WaterBox();
         waterBox.setTotalHeight(200);
-        meterButton = new Button(this);
         meterButton = findViewById(R.id.meterButton);
+        goToReportsAndChartButton = findViewById(R.id.goToReportsAndChart);
         meterPercent = (TextView) findViewById(R.id.meterText);
         percentageBar = findViewById(R.id.percentageBar);
 
@@ -47,13 +51,15 @@ public class MainActivity extends AppCompatActivity {
         waterBoxHistoryList = new ArrayList<Integer>();
         listView = findViewById(R.id.percentHistory);
         meterButton.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showPercent();
                     }
                 }
         );
+
+        goToReportsAndChartButton.setOnClickListener(this);
 
     }
 
@@ -73,5 +79,18 @@ public class MainActivity extends AppCompatActivity {
         waterBoxHistoryList.add(percentWaterBox);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, waterBoxHistoryList);
         listView.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.goToReportsAndChart) {
+            Intent intent = new Intent(MainActivity.this, ReportsAndChartsActivity.class);
+            MainActivity.this.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
